@@ -9,6 +9,423 @@
     href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap"
     rel="stylesheet">
   <style>
+    /* ============================================================
+   PROCESS — auto-advancing journey player
+   ============================================================ */
+#process { padding: 110px 0; }
+
+.proc-player {
+  position: relative;
+  margin-top: 28px;
+}
+
+/* ---------- top progress bar ---------- */
+.proc-progress {
+  position: relative;
+  height: 4px;
+  border-radius: 4px;
+  background: #e3e9e4;
+  overflow: hidden;
+  margin-bottom: 42px;
+}
+.proc-progress-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  background: var(--gold);
+  border-radius: 4px;
+  transition: width .4s cubic-bezier(.2,.8,.2,1);
+}
+
+/* ---------- node track ---------- */
+.proc-track {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  position: relative;
+}
+
+/* connector line between nodes */
+.proc-track::before {
+  content: "";
+  position: absolute;
+  top: 34px;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: #e3e9e4;
+  z-index: 0;
+}
+
+.proc-node {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: 0 12px;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  text-align: center;
+}
+
+/* dot */
+.proc-dot {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid #e3e9e4;
+  display: grid;
+  place-items: center;
+  transition: border-color .4s, background .4s, transform .4s,
+              box-shadow .4s;
+}
+.proc-dot span {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--mut);
+  line-height: 1;
+  transition: color .4s;
+}
+
+.proc-node:hover .proc-dot {
+  border-color: var(--gold);
+  transform: translateY(-3px);
+}
+
+/* active node */
+.proc-node.on .proc-dot {
+  border-color: var(--gold);
+  background: var(--gold);
+  transform: scale(1.08);
+  box-shadow: 0 0 0 6px rgba(242, 183, 5, .15),
+              0 16px 34px rgba(242, 183, 5, .35);
+}
+.proc-node.on .proc-dot span { color: var(--gk); }
+
+/* pulsing ring on active node */
+.proc-node.on .proc-dot::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  opacity: 0;
+  animation: procPulse 1.8s ease-out infinite;
+}
+@keyframes procPulse {
+  0%   { transform: scale(1);   opacity: .6; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+
+/* label under node */
+.proc-info b {
+  display: block;
+  font-family: 'Barlow Condensed', sans-serif;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  letter-spacing: .01em;
+  color: var(--g);
+  line-height: 1.1;
+  transition: color .4s;
+}
+.proc-info i {
+  display: block;
+  font-style: normal;
+  font-size: .82rem;
+  color: var(--mut);
+  margin-top: 2px;
+  transition: color .4s;
+}
+.proc-node.on .proc-info b { color: var(--g); }
+.proc-node.on .proc-info i { color: var(--ink); }
+
+/* speed tag */
+.proc-time {
+  display: inline-block;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--g);
+  background: #e6f4ea;
+  padding: 3px 10px;
+  border-radius: 30px;
+  transition: background .4s, color .4s;
+}
+.proc-node.on .proc-time {
+  background: var(--gold);
+  color: var(--gk);
+}
+
+/* ---------- caption panel ---------- */
+.proc-caption {
+  position: relative;
+  max-width: 720px;
+  margin: 32px auto 0;
+  min-height: 66px;
+  text-align: center;
+}
+
+.proc-cap {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .45s ease, transform .45s cubic-bezier(.2,.8,.2,1);
+  pointer-events: none;
+}
+.proc-cap.on {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+.proc-cap p {
+  color: var(--mut);
+  font-size: 1rem;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 1000px) {
+  .proc-track { grid-template-columns: repeat(2, 1fr); row-gap: 36px; }
+  .proc-track::before { display: none; }
+}
+
+@media (max-width: 600px) {
+  #process { padding: 80px 0; }
+  .proc-track { grid-template-columns: 1fr; row-gap: 28px; }
+  .proc-node {
+    grid-template-columns: 56px 1fr auto;
+    justify-items: start;
+    text-align: left;
+    gap: 14px;
+    padding: 0;
+  }
+  .proc-dot { width: 56px; height: 56px; }
+  .proc-dot span { font-size: 1.2rem; }
+  .proc-caption { text-align: left; margin-top: 24px; }
+  .proc-cap p { font-size: .95rem; }
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .proc-node.on .proc-dot::after { animation: none; opacity: 0; }
+  .proc-progress-fill { transition: none; }
+  .proc-cap { transition: none; }
+  .proc-dot, .proc-info b, .proc-info i, .proc-time { transition: none; }
+}
+    /* ===== Why / The Ramesar difference ===== */
+.why {
+  position: relative;
+  background: linear-gradient(135deg, var(--gk), var(--g));
+  color: #fff;
+  padding: 150px 0;
+  clip-path: polygon(0 0, 100% 4%, 100% 100%, 0 96%);
+  overflow: hidden;
+}
+
+/* faint diagonal texture */
+.why::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(242,183,5,.04) 0 16px,
+    transparent 16px 32px
+  );
+  pointer-events: none;
+}
+
+.why .wrap { position: relative; z-index: 1; }
+
+.why-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 70px;
+  align-items: center;
+}
+
+/* ---------- Left visual ---------- */
+.why-visual {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 30px 70px rgba(0,0,0,.45);
+  aspect-ratio: 4 / 5;
+}
+.why-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s cubic-bezier(.2,.8,.2,1);
+}
+.why-visual:hover img { transform: scale(1.06); }
+
+.why-badge {
+  position: absolute;
+  left: -28px;
+  bottom: 40px;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--gk);
+  display: grid;
+  place-content: center;
+  text-align: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  text-transform: uppercase;
+  box-shadow: 0 16px 40px rgba(0,0,0,.4);
+  transform: rotate(-8deg);
+}
+.why-badge b {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+}
+.why-badge span {
+  font-size: .8rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-top: 4px;
+}
+
+/* ---------- Right content ---------- */
+.why-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  font-weight: 700;
+  color: var(--gold);
+  font-size: .9rem;
+  margin-bottom: 12px;
+}
+
+.why-content h2 {
+  font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+  line-height: 1.02;
+  margin-bottom: 18px;
+}
+
+.why-lede {
+  color: #cfe0d5;
+  max-width: 48ch;
+  margin-bottom: 34px;
+}
+
+/* numbered differentiators */
+.why-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 36px;
+  display: grid;
+  gap: 0;
+}
+.why-list li {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 20px 0;
+  border-top: 1px solid rgba(255,255,255,.12);
+}
+.why-list li:last-child { border-bottom: 1px solid rgba(255,255,255,.12); }
+
+.why-num {
+  flex: none;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 1.6rem;
+  color: var(--gold);
+  line-height: 1;
+  min-width: 44px;
+  position: relative;
+  padding-top: 2px;
+}
+.why-num::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 26px;
+  height: 2px;
+  background: var(--gold);
+  opacity: .5;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .6s .2s;
+}
+.why-list li.in .why-num::after { transform: scaleX(1); }
+
+.why-list h3 {
+  font-size: 1.35rem;
+  text-transform: uppercase;
+  letter-spacing: .01em;
+  margin-bottom: 4px;
+}
+.why-list p {
+  color: #cfe0d5;
+  font-size: .95rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* CTA row */
+.why-cta {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.btn-line-dark {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 30px;
+  font-weight: 600;
+  border-radius: 50px;
+  border: 2px solid rgba(255,255,255,.5);
+  color: #fff;
+  transition: .25s;
+}
+.btn-line-dark:hover {
+  background: #fff;
+  color: var(--gd);
+  border-color: #fff;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1000px) {
+  .why-grid {
+    grid-template-columns: 1fr;
+    gap: 44px;
+  }
+  .why-visual {
+    aspect-ratio: 16 / 10;
+    max-width: 560px;
+  }
+  .why-badge { left: 20px; bottom: -30px; }
+  .why { padding: 110px 0; }
+}
+
+@media (max-width: 600px) {
+  .why-badge {
+    width: 100px;
+    height: 100px;
+    left: 12px;
+  }
+  .why-badge b { font-size: 1.5rem; }
+  .why-list li { gap: 14px; }
+  .why-num { font-size: 1.3rem; min-width: 36px; }
+}
+.why-list li.in .why-num::after { transform: scaleX(1); }
     :root {
       --g: #0b5a2b;
       --gd: #06381a;
@@ -150,10 +567,8 @@
     }
 
     .logo {
-      /* background: #fff; */
       border-radius: 14px;
       padding: 6px 10px;
-      /* box-shadow: 0 6px 20px rgba(0, 0, 0, .2) */
     }
 
     .logo img {
@@ -580,23 +995,31 @@
       display: block
     }
 
-    /* IASHEP */
-    .ia {
+    /* IASHEP NEW SECTION (replaces old .ia) */
+    .csc-iashep-section {
       background: linear-gradient(135deg, var(--gk), var(--g));
       color: #fff;
       position: relative;
       clip-path: polygon(0 4%, 100% 0, 100% 96%, 0 100%);
-      padding: 150px 0
+      padding: 150px 0;
+      font-family: Barlow, system-ui, sans-serif;
     }
 
-    .ia .grid {
+    .csc-iashep-container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .csc-iashep-grid {
       display: grid;
       grid-template-columns: 1fr 1.1fr;
       gap: 70px;
-      align-items: center
+      align-items: center;
     }
 
-    .badge {
+    /* Card (left) */
+    .csc-iashep-card {
       background: #fff;
       color: var(--ink);
       border-radius: 22px;
@@ -605,14 +1028,14 @@
       border-top: 10px solid var(--gold);
       box-shadow: 0 30px 70px rgba(0, 0, 0, .4);
       transform: rotate(-2deg);
-      transition: .4s
+      transition: .4s;
     }
 
-    .badge:hover {
-      transform: rotate(0)
+    .csc-iashep-card:hover {
+      transform: rotate(0);
     }
 
-    .seal {
+    .csc-iashep-logo {
       width: 130px;
       height: 130px;
       margin: 0 auto 18px;
@@ -620,68 +1043,106 @@
       border: 6px double var(--g);
       display: grid;
       place-items: center;
-      color: var(--g);
-      font-family: 'Barlow Condensed';
-      font-weight: 800;
-      font-size: 2rem
+      overflow: hidden;
+      background: #fff;
+      padding: 8px;
     }
 
-    .badge h3 {
+    .csc-iashep-logo img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .csc-iashep-card h3 {
+      font-family: 'Barlow Condensed', Impact, sans-serif;
       font-size: 2.1rem;
-      color: var(--g)
+      color: var(--g);
+      text-transform: uppercase;
+      line-height: 1.02;
+      margin-bottom: 8px;
     }
 
-    .badge p {
+    .csc-iashep-card p {
       color: var(--mut);
       font-size: .95rem;
-      margin: 8px 0 18px
+      margin: 8px 0 18px;
     }
 
-    .badge dl {
+    .csc-iashep-card dl {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
       text-align: left;
       border-top: 1px solid #dfe5e0;
       padding-top: 16px;
-      font-size: .9rem
+      font-size: .9rem;
     }
 
-    .badge dt {
-      color: var(--mut)
+    .csc-iashep-card dt {
+      color: var(--mut);
     }
 
-    .badge dd {
-      font-weight: 600
+    .csc-iashep-card dd {
+      font-weight: 600;
+      word-break: break-word;
     }
 
-    .ia h2 {
-      font-size: clamp(2.4rem, 5vw, 4rem)
+    .csc-status {
+      display: inline-block;
+      background: #e6f4ea;
+      color: #0b5a2b;
+      padding: 2px 12px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: .8rem;
     }
 
-    .ia h2 span {
-      color: var(--gold)
+    .csc-iashep-card dd a {
+      color: var(--g);
+      text-decoration: underline;
+      font-weight: 600;
     }
 
-    .ia p {
+    .csc-iashep-card dd a:hover {
+      color: var(--gold);
+    }
+
+    /* Content (right) */
+    .csc-iashep-content h2 {
+      font-family: 'Barlow Condensed', Impact, sans-serif;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      line-height: 1.02;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+
+    .csc-iashep-content h2 span {
+      color: var(--gold);
+    }
+
+    .csc-iashep-content > p {
       color: #cfe0d5;
       margin: 16px 0 22px;
-      max-width: 54ch
+      max-width: 54ch;
+      font-size: 1rem;
     }
 
-    .ia ul {
+    .csc-iashep-list {
       list-style: none;
       display: grid;
       gap: 12px;
-      margin-bottom: 30px
+      margin-bottom: 30px;
+      padding-left: 0;
     }
 
-    .ia li {
+    .csc-iashep-list li {
       display: flex;
-      gap: 14px
+      gap: 14px;
+      align-items: flex-start;
     }
 
-    .ia li i {
+    .csc-iashep-list li i {
       flex: none;
       width: 26px;
       height: 26px;
@@ -693,7 +1154,67 @@
       font-style: normal;
       font-weight: 800;
       font-size: .85rem;
-      margin-top: 2px
+      margin-top: 2px;
+    }
+
+    .csc-iashep-list li span {
+      font-size: .98rem;
+      color: #e4efe8;
+      line-height: 1.5;
+    }
+
+    .csc-iashep-list li b {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .csc-iashep-buttons {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .csc-iashep-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px 30px;
+      font-weight: 600;
+      border-radius: 50px;
+      border: 2px solid transparent;
+      transition: .25s;
+      cursor: pointer;
+      font-size: 1rem;
+      background: var(--gold);
+      color: var(--gk);
+      box-shadow: 0 8px 24px rgba(242, 183, 5, .35);
+    }
+
+    .csc-iashep-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 30px rgba(242, 183, 5, .5);
+    }
+
+    .csc-iashep-btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px 30px;
+      font-weight: 600;
+      border-radius: 50px;
+      border: 2px solid rgba(255, 255, 255, .7);
+      color: #fff;
+      backdrop-filter: blur(6px);
+      transition: .25s;
+      cursor: pointer;
+      font-size: 1rem;
+      background: transparent;
+    }
+
+    .csc-iashep-btn-outline:hover {
+      background: #fff;
+      color: var(--gd);
+      border-color: #fff;
     }
 
     /* courses */
@@ -824,7 +1345,7 @@
 
     /* why */
     .why {
-      background: var(--bg);
+      /* background: var(--bg); */
       clip-path: polygon(0 0, 100% 4%, 100% 100%, 0 100%);
       padding-top: 140px
     }
@@ -1186,7 +1707,7 @@
       }
 
       .about,
-      .ia .grid {
+      .csc-iashep-grid {
         grid-template-columns: 1fr;
         gap: 44px
       }
@@ -1234,6 +1755,20 @@
       .slide h1 {
         font-size: 3.2rem
       }
+
+      .csc-iashep-card {
+        padding: 28px 22px;
+      }
+
+      .csc-iashep-buttons {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .csc-iashep-btn,
+      .csc-iashep-btn-outline {
+        justify-content: center;
+      }
     }
 
     @media(prefers-reduced-motion:reduce) {
@@ -1273,7 +1808,7 @@
         <li><a href="#process">Process</a></li>
         <li><a href="#faq">FAQ</a></li>
       </ul>
-      <a href="#contact" class="btn btn-gold">Book a course</a>
+      <a href="#contact" class="btn btn-gold">Enroll Now</a>
       <button class="burger" aria-label="Menu" onclick="nav.classList.toggle('open')">&#9776;</button>
     </div>
   </header>
@@ -1322,8 +1857,8 @@
 
   <section id="about">
     <div class="wrap about">
-      <div class="collage rv"><img src="https://picsum.photos/seed/about-a/700/700" alt="" loading="lazy"><img
-          src="https://picsum.photos/seed/about-b/500/500" alt="" loading="lazy">
+      <div class="collage rv"><img src="slide4.jpg" alt="" loading="lazy"><img
+          src="slide5.jpg" alt="" loading="lazy">
         <div class="ring"><i>Safety<br>first<br>always</i></div>
       </div>
       <div class="rv">
@@ -1343,37 +1878,112 @@
     </div>
   </section>
 
-  <section class="ia" id="authorized">
-    <div class="wrap grid">
-      <div class="badge rv">
-        <div class="seal">IASHEP</div>
-        <h3>Authorized Learning Center</h3>
-        <p>Ramesar Industrial and Oilfield Training Limited is an approved IASHEP learning center.</p>
-        <dl>
-          <dt>Center ID</dt>
-          <dd>IASHEP-XXXX</dd>
-          <dt>Status</dt>
-          <dd>Active</dd>
-          <dt>Valid until</dt>
-          <dd>DD / MM / YYYY</dd>
-          <dt>Verify</dt>
-          <dd><a href="https://iashep.org/" target="_blank" rel="noopener"
-              style="color:var(--g);text-decoration:underline">iashep.org</a></dd>
-        </dl>
-      </div>
-      <div class="rv">
-        <h2>We are an authorized <span>IASHEP</span> learning center</h2>
-        <p>Learners can be confident that our centre is officially recognised. Replace this text with your approval
-          details.</p>
-        <ul>
-          <li><i>&#10003;</i><span><b>Officially recognised</b> centre, verifiable on the IASHEP website.</span></li>
-          <li><i>&#10003;</i><span><b>Approved delivery</b> by qualified instructors.</span></li>
-          <li><i>&#10003;</i><span><b>Credible certificates</b> that employers can check.</span></li>
-        </ul>
-        <a href="https://iashep.org/" target="_blank" rel="noopener" class="btn btn-gold">Verify our status</a>
+  <!-- ===== NEW IASHEP AUTHORIZED LEARNING CENTER SECTION ===== -->
+  <section class="csc-iashep-section" id="authorized">
+    <div class="csc-iashep-container">
+
+      <div class="csc-iashep-grid">
+
+        <!-- LEFT: AUTHORIZATION CARD -->
+        <div class="csc-iashep-card rv">
+          <div class="csc-iashep-logo">
+            <img src="iashep.png" alt="IASHEP Logo">
+          </div>
+
+          <h3>Authorized Learning Center</h3>
+
+          <p>
+            Ramesar Industrial and Oilfield Training Limited is an officially authorized
+            IASHEP learning center.
+          </p>
+
+          <dl>
+            <dt>Organization</dt>
+            <dd>IASHEP</dd>
+
+            <dt>Status</dt>
+            <dd><span class="csc-status">Active</span></dd>
+
+            <dt>Recognition</dt>
+            <dd>Authorized Learning Center</dd>
+
+            <dt>Verify</dt>
+            <dd>
+              <a href="https://iashep.org/" target="_blank" rel="noopener noreferrer">
+                iashep.org
+              </a>
+            </dd>
+          </dl>
+        </div>
+
+        <!-- RIGHT: CONTENT -->
+        <div class="csc-iashep-content rv">
+
+          <h2>
+            We are an authorized
+            <span>IASHEP</span> learning center
+          </h2>
+
+          <p>
+            Ramesar Industrial and Oilfield Training Limited is proud to be an authorized learning
+            center of the International Association of Safety, Health &amp;
+            Environmental Professionals (IASHEP), delivering professional
+            safety training and internationally recognized certifications
+            to learners worldwide.
+          </p>
+
+          <ul class="csc-iashep-list">
+            <li>
+              <i>&#10003;</i>
+              <span>
+                <b>Globally Recognized</b> certifications trusted
+                across international industries.
+              </span>
+            </li>
+
+            <li>
+              <i>&#10003;</i>
+              <span>
+                <b>Authorized Training</b> through an officially
+                recognized IASHEP learning center.
+              </span>
+            </li>
+
+            <li>
+              <i>&#10003;</i>
+              <span>
+                <b>Verified Certification</b> credentials that can
+                be verified through IASHEP.
+              </span>
+            </li>
+
+            <li>
+              <i>&#10003;</i>
+              <span>
+                <b>International Reach</b> connecting safety
+                professionals with recognized training opportunities.
+              </span>
+            </li>
+          </ul>
+
+          <div class="csc-iashep-buttons">
+            <a href="https://iashep.org/" target="_blank" rel="noopener noreferrer"
+               class="csc-iashep-btn">
+              Verify Our Status
+            </a>
+
+            <a href="#courses"
+               class="csc-iashep-btn-outline">
+              Explore Courses
+            </a>
+          </div>
+
+        </div>
+
       </div>
     </div>
   </section>
+  <!-- ===== END NEW IASHEP SECTION ===== -->
 
   <section id="courses">
     <div class="wrap">
@@ -1385,119 +1995,199 @@
           data-f="ind">Industrial</button><button data-f="lead">Leadership</button></div>
       <div class="rail">
         <article class="card" data-c="oil">
-          <div class="im"><img src="https://picsum.photos/seed/c-h2s/680/420" alt="" loading="lazy"><span
+          <div class="im"><img src="h2s.jpg" alt="" loading="lazy"><span
               class="tag">Oilfield</span></div>
           <div class="bd">
             <h3>H2S Awareness &amp; Safety</h3>
             <p>Detect, respond and escape hydrogen sulphide hazards.</p>
-            <div class="mt"><span>1 day</span><a href="#contact">Enrol</a></div>
+            <div class="mt"><span>1 day</span><a href="#contact">Enroll Now</a></div>
           </div>
         </article>
         <article class="card" data-c="ind">
-          <div class="im"><img src="https://picsum.photos/seed/c-height/680/420" alt="" loading="lazy"><span
+          <div class="im"><img src="height.jpg" alt="" loading="lazy"><span
               class="tag">Industrial</span></div>
           <div class="bd">
             <h3>Working at Height</h3>
             <p>Fall protection, rescue planning and equipment checks.</p>
-            <div class="mt"><span>2 days</span><a href="#contact">Enrol</a></div>
+            <div class="mt"><span>2 days</span><a href="#contact">Enroll Now</a></div>
           </div>
         </article>
         <article class="card" data-c="oil">
-          <div class="im"><img src="https://picsum.photos/seed/c-well/680/420" alt="" loading="lazy"><span
+          <div class="im"><img src="oilrig.jpg" alt="" loading="lazy"><span
               class="tag">Oilfield</span></div>
           <div class="bd">
             <h3>Well Control Basics</h3>
             <p>Pressure control principles for rig and wellsite crews.</p>
-            <div class="mt"><span>3 days</span><a href="#contact">Enrol</a></div>
+            <div class="mt"><span>3 days</span><a href="#contact">Enroll Now</a></div>
           </div>
         </article>
         <article class="card" data-c="ind">
-          <div class="im"><img src="https://picsum.photos/seed/c-confined/680/420" alt="" loading="lazy"><span
+          <div class="im"><img src="confined.jpg" alt="" loading="lazy"><span
               class="tag">Industrial</span></div>
           <div class="bd">
             <h3>Confined Space Entry</h3>
             <p>Permits, gas testing and emergency response.</p>
-            <div class="mt"><span>1 day</span><a href="#contact">Enrol</a></div>
+            <div class="mt"><span>1 day</span><a href="#contact">Enroll Now</a></div>
           </div>
         </article>
         <article class="card" data-c="ind">
-          <div class="im"><img src="https://picsum.photos/seed/c-fire/680/420" alt="" loading="lazy"><span
+          <div class="im"><img src="fire.jpg" alt="" loading="lazy"><span
               class="tag">Industrial</span></div>
           <div class="bd">
             <h3>Fire Safety &amp; Response</h3>
             <p>Prevent fires, use extinguishers and lead evacuations.</p>
-            <div class="mt"><span>1 day</span><a href="#contact">Enrol</a></div>
+            <div class="mt"><span>1 day</span><a href="#contact">Enroll Now</a></div>
           </div>
         </article>
         <article class="card" data-c="lead oil ind">
-          <div class="im"><img src="https://picsum.photos/seed/c-hse/680/420" alt="" loading="lazy"><span
+          <div class="im"><img src="hse.jpg" alt="" loading="lazy"><span
               class="tag">Leadership</span></div>
           <div class="bd">
             <h3>HSE Supervisor Programme</h3>
             <p>Risk assessment, investigations and safety leadership.</p>
-            <div class="mt"><span>5 days</span><a href="#contact">Enrol</a></div>
+            <div class="mt"><span>5 days</span><a href="#contact">Enroll Now</a></div>
           </div>
         </article>
       </div>
     </div>
   </section>
 
-  <section class="why" id="why">
-    <div class="wrap">
-      <div class="head rv">
-        <h2>Training that works in the field</h2>
-        <p>We teach the way your crews actually work.</p>
-      </div>
-      <div class="feat">
-        <div class="f rv">
-          <div class="ic">&#128119;</div>
-          <h3>Industry instructors</h3>
-          <p>Trainers with years of oilfield and plant experience.</p>
-        </div>
-        <div class="f rv">
-          <div class="ic">&#128293;</div>
-          <h3>Live drills</h3>
-          <p>Real equipment and realistic emergency scenarios.</p>
-        </div>
-        <div class="f rv">
-          <div class="ic">&#128205;</div>
-          <h3>Flexible delivery</h3>
-          <p>At our centre, at your site or blended.</p>
-        </div>
-        <div class="f rv">
-          <div class="ic">&#9889;</div>
-          <h3>Fast certificates</h3>
-          <p>Issued quickly with online verification.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+<section class="why" id="why">
+  <div class="wrap">
+    <div class="why-grid">
 
-  <section id="process">
-    <div class="wrap">
-      <div class="head rv">
-        <h2>From enquiry to certificate</h2>
-      </div>
-      <div class="steps">
-        <div class="step rv">
-          <h3>Choose a course</h3>
-          <p>Browse the catalogue or tell us your site needs.</p>
-        </div>
-        <div class="step rv">
-          <h3>Book your date</h3>
-          <p>Pick a public session or a private group.</p>
-        </div>
-        <div class="step rv">
-          <h3>Train and assess</h3>
-          <p>Complete practical sessions and the assessment.</p>
-        </div>
-        <div class="step rv">
-          <h3>Get certified</h3>
-          <p>Receive your certificate and renewal reminders.</p>
+      <!-- LEFT: visual (online learning context) -->
+      <div class="why-visual rv">
+        <img src="oilfield.png" alt="A worker completing an online safety course on a laptop" loading="lazy">
+        <div class="why-badge">
+          <b>24/7</b>
+          <span>access<br>any device</span>
         </div>
       </div>
+
+      <!-- RIGHT: content -->
+      <div class="why-content">
+        <p class="why-eyebrow rv">The Ramesar difference</p>
+        <h2 class="rv">Online safety training that actually sticks</h2>
+        <p class="why-lede rv">No travel. No downtime. Just focused, scenario-based modules built by people who've worked the field.</p>
+
+        <ol class="why-list">
+          <li class="rv">
+            <span class="why-num">01</span>
+            <div>
+              <h3>Learn at your own pace</h3>
+              <p>Start anytime, pause and resume. Complete modules between shifts, on any device.</p>
+            </div>
+          </li>
+          <li class="rv">
+            <span class="why-num">02</span>
+            <div>
+              <h3>Scenarios, not slideshows</h3>
+              <p>Interactive decision-making modules — not passive video you click through.</p>
+            </div>
+          </li>
+          <li class="rv">
+            <span class="why-num">03</span>
+            <div>
+              <h3>Built by field instructors</h3>
+              <p>Content written and delivered by trainers who've worked the rigs and plants.</p>
+            </div>
+          </li>
+          <li class="rv">
+            <span class="why-num">04</span>
+            <div>
+              <h3>Instant, verifiable certificates</h3>
+              <p>Issued on completion and checkable online — recognized through IASHEP.</p>
+            </div>
+          </li>
+        </ol>
+
+        <div class="why-cta rv">
+          <a href="#courses" class="btn btn-gold">Browse courses</a>
+          <a href="#contact" class="btn btn-line-dark">Ask about group enrollment</a>
+        </div>
+      </div>
+
     </div>
-  </section>
+  </div>
+</section>
+
+<section id="process">
+  <div class="wrap">
+    <div class="head rv">
+      <h2>From sign-up to certificate</h2>
+      <p>Four steps. No travel, no scheduled classes, no waiting.</p>
+    </div>
+
+    <div class="proc-player rv">
+
+      <!-- top progress bar -->
+      <div class="proc-progress" aria-hidden="true">
+        <span class="proc-progress-fill"></span>
+      </div>
+
+      <!-- nodes row -->
+      <div class="proc-track" role="tablist" aria-label="Enrollment steps">
+
+        <button class="proc-node on" data-i="0" role="tab" aria-selected="true">
+          <span class="proc-dot"><span>01</span></span>
+          <span class="proc-info">
+            <b>Pick your course</b>
+            <i>Choose the certification your role needs</i>
+          </span>
+          <span class="proc-time">2 min</span>
+        </button>
+
+        <button class="proc-node" data-i="1" role="tab" aria-selected="false">
+          <span class="proc-dot"><span>02</span></span>
+          <span class="proc-info">
+            <b>Enroll online</b>
+            <i>Instant access — individual or whole crew</i>
+          </span>
+          <span class="proc-time">Instant access</span>
+        </button>
+
+        <button class="proc-node" data-i="2" role="tab" aria-selected="false">
+          <span class="proc-dot"><span>03</span></span>
+          <span class="proc-info">
+            <b>Learn at your pace</b>
+            <i>Scenario-based modules on any device</i>
+          </span>
+          <span class="proc-time">Self-paced</span>
+        </button>
+
+        <button class="proc-node" data-i="3" role="tab" aria-selected="false">
+          <span class="proc-dot"><span>04</span></span>
+          <span class="proc-info">
+            <b>Get certified</b>
+            <i>Verifiable certificate, issued instantly</i>
+          </span>
+          <span class="proc-time">Same day</span>
+        </button>
+
+      </div>
+
+      <!-- active step description panel -->
+      <div class="proc-caption" aria-live="polite">
+
+        <div class="proc-cap on" data-i="0">
+          <p>Browse the catalogue and choose the certification your role needs — filter by oilfield, industrial or leadership.</p>
+        </div>
+        <div class="proc-cap" data-i="1">
+          <p>Pay securely and get access right away — individually, or enroll your whole crew with a supervisor dashboard.</p>
+        </div>
+        <div class="proc-cap" data-i="2">
+          <p>Work through scenario-based modules on any device, whenever you have time. Pause and resume anytime.</p>
+        </div>
+        <div class="proc-cap" data-i="3">
+          <p>Pass the final assessment and download your verifiable certificate instantly — recognized through IASHEP.</p>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
 
   <section class="tm">
     <div class="wrap">
@@ -1530,7 +2220,7 @@
   <section id="faq">
     <div class="wrap faq">
       <div class="head rv">
-        <h2>Common questions</h2>
+        <h2>FAQ's</h2>
       </div>
       <details open>
         <summary>Can you train at our site?</summary>
@@ -1558,7 +2248,7 @@
   <footer>
     <div class="wrap">
       <div class="fg">
-        <div><img src="logo.png" alt="Ramesar logo">
+        <div><img src="ramesar.png" alt="Ramesar logo">
           <p>Industrial and oilfield safety training.</p>
         </div>
         <div>
@@ -1590,7 +2280,7 @@
           Terms</span></div>
     </div>
   </footer>
-  <a href="#contact" class="btn btn-gold fab" id="fab">Book a course</a>
+  <a href="#contact" class="btn btn-gold fab" id="fab" style="display:none;">Book a course</a>
 
   <script>
     (function () {
@@ -1618,7 +2308,57 @@
       function tg(n) {ts[k].classList.remove('on'); td[k].classList.remove('on'); k = n % ts.length; ts[k].classList.add('on'); td[k].classList.add('on')}
       td.forEach(function (b, n) {b.onclick = function () {tg(n)}}); setInterval(function () {tg(k + 1)}, 6500);
     })();
+    
+
+
+  <!-- ===== PROCESS PLAYER (self-contained) ===== -->
+  <script>
+  (function () {
+    var player = document.querySelector('.proc-player');
+    if (!player) return;
+
+    var nodes = player.querySelectorAll('.proc-node');
+    var caps  = player.querySelectorAll('.proc-cap');
+    var fill  = player.querySelector('.proc-progress-fill');
+    if (!nodes.length) return;
+
+    var DUR = 2000, cur = 0, timer = null, paused = false;
+
+    function render() {
+      nodes.forEach(function (n, i) {
+        n.classList.toggle('on', i === cur);
+        n.setAttribute('aria-selected', i === cur ? 'true' : 'false');
+      });
+      caps.forEach(function (c, i) {
+        c.classList.toggle('on', i === cur);
+      });
+      if (fill) fill.style.width = ((cur + 1) / nodes.length) * 100 + '%';
+    }
+
+    function next() { cur = (cur + 1) % nodes.length; render(); }
+    function start() { clearInterval(timer); if (!paused) timer = setInterval(next, DUR); }
+    function jump(i) { cur = i; render(); start(); }
+
+    nodes.forEach(function (n, i) {
+      n.addEventListener('click', function () { jump(i); });
+    });
+
+    player.addEventListener('mouseenter', function () { paused = true; clearInterval(timer); });
+    player.addEventListener('mouseleave', function () { paused = false; start(); });
+
+    new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) start();
+        else clearInterval(timer);
+      });
+    }, { threshold: 0.3 }).observe(player);
+
+    render();
+  })();
   </script>
+  <!-- ===== /PROCESS PLAYER ===== -->
+</body>
+</html>
 </body>
 
 </html>
