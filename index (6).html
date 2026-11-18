@@ -1,0 +1,1624 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ramesar Industrial and Oilfield Training Limited | Safety Training Courses</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --g: #0b5a2b;
+      --gd: #06381a;
+      --gk: #031f0f;
+      --gold: #f2b705;
+      --ink: #14201a;
+      --mut: #5b6a61;
+      --bg: #f3f6f2
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      font-family: Barlow, system-ui, sans-serif;
+      color: var(--ink);
+      line-height: 1.6;
+      overflow-x: hidden
+    }
+
+    h1,
+    h2,
+    h3,
+    .cond {
+      font-family: 'Barlow Condensed', Impact, sans-serif;
+      line-height: 1.02;
+      text-transform: uppercase
+    }
+
+    img {
+      max-width: 100%;
+      display: block
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 3px
+    }
+
+    .wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px 30px;
+      font-weight: 600;
+      border-radius: 50px;
+      border: 2px solid transparent;
+      transition: .25s;
+      cursor: pointer;
+      font-size: 1rem;
+      position: relative
+    }
+
+    .btn-gold {
+      background: var(--gold);
+      color: var(--gk);
+      box-shadow: 0 8px 24px rgba(242, 183, 5, .35)
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 30px rgba(242, 183, 5, .5)
+    }
+
+    .btn-line {
+      border-color: rgba(255, 255, 255, .7);
+      color: #fff;
+      backdrop-filter: blur(6px)
+    }
+
+    .btn-line:hover {
+      background: #fff;
+      color: var(--gd)
+    }
+
+    .btn-green {
+      background: var(--g);
+      color: #fff
+    }
+
+    .btn-green:hover {
+      background: var(--gd)
+    }
+
+    #bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: var(--gold);
+      width: 0;
+      z-index: 100
+    }
+
+    /* header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 60;
+      transition: .3s
+    }
+
+    header.s {
+      background: rgba(255, 255, 255, .96);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, .1)
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 139px;
+      transition: .3s
+    }
+
+    header.s .nav {
+      height: 102px
+    }
+
+    .logo {
+      /* background: #fff; */
+      border-radius: 14px;
+      padding: 6px 10px;
+      /* box-shadow: 0 6px 20px rgba(0, 0, 0, .2) */
+    }
+
+    .logo img {
+      height: 125px;
+      width: auto;
+      transition: .3s
+    }
+
+    header.s .logo {
+      box-shadow: none;
+      padding: 0
+    }
+
+    header.s .logo img {
+      height: 94px
+    }
+
+    .nav ul {
+      display: flex;
+      gap: 34px;
+      list-style: none;
+      font-weight: 600;
+      color: #fff
+    }
+
+    header.s .nav ul {
+      color: var(--ink)
+    }
+
+    .nav ul a {
+      position: relative;
+      padding: 6px 0
+    }
+
+    .nav ul a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 3px;
+      width: 0;
+      background: var(--gold);
+      transition: .3s
+    }
+
+    .nav ul a:hover::after {
+      width: 100%
+    }
+
+    .burger {
+      display: none;
+      background: none;
+      border: 0;
+      font-size: 2rem;
+      color: #fff
+    }
+
+    header.s .burger {
+      color: var(--g)
+    }
+
+    /* hero */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 640px;
+      background: var(--gk);
+      overflow: hidden;
+      clip-path: polygon(0 0, 100% 0, 100% 94%, 0 100%)
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 1s, visibility 1s;
+      display: flex;
+      align-items: center
+    }
+
+    .slide.on {
+      opacity: 1;
+      visibility: visible;
+      z-index: 2
+    }
+
+    .slide>img {
+      position: absolute;
+      inset: -4%;
+      width: 108%;
+      height: 108%;
+      object-fit: cover;
+      transform: scale(1)
+    }
+
+    .slide.on>img {
+      animation: kb 9s ease-out forwards
+    }
+
+    @keyframes kb {
+      to {
+        transform: scale(1.12) translate(-1.5%, -1%)
+      }
+    }
+
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(105deg, rgba(3, 31, 15, .95) 0%, rgba(6, 56, 26, .78) 48%, rgba(6, 56, 26, .1) 100%)
+    }
+
+    .slide .wrap {
+      position: relative;
+      z-index: 2;
+      color: #fff;
+      width: 100%;
+      padding-top: 70px
+    }
+
+    .slide h1 {
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 800;
+      max-width: 11ch
+    }
+
+    .slide h1 span {
+      display: block;
+      overflow: hidden
+    }
+
+    .slide h1 span b {
+      display: inline-block;
+      font-weight: 800;
+      transform: translateY(110%)
+    }
+
+    .slide.on h1 span b {
+      animation: up .8s cubic-bezier(.2, .8, .2, 1) forwards
+    }
+
+    .slide.on h1 span:nth-child(2) b {
+      animation-delay: .15s;
+      color: var(--gold)
+    }
+
+    .slide.on h1 span:nth-child(3) b {
+      animation-delay: .3s
+    }
+
+    @keyframes up {
+      to {
+        transform: none
+      }
+    }
+
+    .slide p,
+    .slide .btns {
+      opacity: 0;
+      transform: translateY(24px)
+    }
+
+    .slide.on p {
+      animation: fade .8s .6s forwards
+    }
+
+    .slide.on .btns {
+      animation: fade .8s .8s forwards
+    }
+
+    @keyframes fade {
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    .slide p {
+      max-width: 50ch;
+      font-size: 1.2rem;
+      margin: 24px 0 34px;
+      color: #e4efe8
+    }
+
+    .slide .btns {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap
+    }
+
+    .side {
+      position: absolute;
+      right: 28px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 6;
+      display: grid;
+      gap: 14px
+    }
+
+    .side button {
+      width: 84px;
+      height: 56px;
+      border: 2px solid rgba(255, 255, 255, .4);
+      border-radius: 10px;
+      overflow: hidden;
+      padding: 0;
+      cursor: pointer;
+      opacity: .7;
+      transition: .3s;
+      background: none
+    }
+
+    .side button img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover
+    }
+
+    .side button.on {
+      border-color: var(--gold);
+      opacity: 1;
+      transform: scale(1.12)
+    }
+
+    .prog {
+      position: absolute;
+      left: 0;
+      bottom: 6%;
+      height: 5px;
+      background: var(--gold);
+      width: 0;
+      z-index: 6
+    }
+
+    .chip {
+      position: absolute;
+      z-index: 5;
+      left: 77%;
+      bottom: 7%;
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap
+    }
+
+    .chip div {
+      background: rgba(255, 255, 255, .12);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, .25);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 14px;
+      font-size: .9rem;
+      animation: float 4s ease-in-out infinite
+    }
+
+    .chip div:nth-child(2) {
+      animation-delay: 1s
+    }
+
+    .chip div:nth-child(3) {
+      animation-delay: 2s
+    }
+
+    .chip b {
+      display: block;
+      font-family: 'Barlow Condensed';
+      font-size: 1.7rem;
+      color: var(--gold);
+      line-height: 1
+    }
+
+    @keyframes float {
+      50% {
+        transform: translateY(-8px)
+      }
+    }
+
+    /* marquee */
+    .mq {
+      background: var(--gold);
+      color: var(--gk);
+      overflow: hidden;
+      white-space: nowrap;
+      padding: 16px 0;
+      margin-top: -4vh;
+      position: relative;
+      z-index: 3;
+      transform: rotate(-1deg) scale(1.02)
+    }
+
+    .mq div {
+      display: inline-block;
+      animation: mq 30s linear infinite;
+      font-family: 'Barlow Condensed';
+      font-size: 1.7rem;
+      font-weight: 700;
+      text-transform: uppercase
+    }
+
+    .mq span {
+      margin: 0 28px
+    }
+
+    .mq span::after {
+      content: "\2726";
+      margin-left: 56px;
+      color: var(--g)
+    }
+
+    @keyframes mq {
+      to {
+        transform: translateX(-50%)
+      }
+    }
+
+    section {
+      padding: 110px 0
+    }
+
+    .head {
+      max-width: 700px;
+      margin-bottom: 52px
+    }
+
+    .head h2 {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      color: var(--g)
+    }
+
+    .head p {
+      color: var(--mut);
+      margin-top: 14px;
+      font-size: 1.1rem
+    }
+
+    /* about / stats */
+    .about {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 70px;
+      align-items: center
+    }
+
+    .collage {
+      position: relative;
+      height: 540px
+    }
+
+    .collage img {
+      position: absolute;
+      border-radius: 18px;
+      object-fit: cover;
+      box-shadow: 0 24px 50px rgba(6, 56, 26, .25)
+    }
+
+    .collage img:nth-child(1) {
+      left: 0;
+      top: 0;
+      width: 66%;
+      height: 78%
+    }
+
+    .collage img:nth-child(2) {
+      right: 0;
+      bottom: 0;
+      width: 52%;
+      height: 55%;
+      border: 8px solid #fff
+    }
+
+    .collage .ring {
+      position: absolute;
+      right: 6%;
+      top: 4%;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--gk);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      font-family: 'Barlow Condensed';
+      font-weight: 800;
+      font-size: 1.25rem;
+      line-height: 1.1;
+      animation: spin 18s linear infinite;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, .25)
+    }
+
+    .collage .ring i {
+      font-style: normal;
+      animation: spin 18s linear infinite reverse
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 30px
+    }
+
+    .stat {
+      background: var(--bg);
+      border-radius: 16px;
+      padding: 22px;
+      border-left: 6px solid var(--gold)
+    }
+
+    .stat b {
+      font-family: 'Barlow Condensed';
+      font-size: 3.2rem;
+      color: var(--g);
+      line-height: 1;
+      display: block
+    }
+
+    /* IASHEP */
+    .ia {
+      background: linear-gradient(135deg, var(--gk), var(--g));
+      color: #fff;
+      position: relative;
+      clip-path: polygon(0 4%, 100% 0, 100% 96%, 0 100%);
+      padding: 150px 0
+    }
+
+    .ia .grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 70px;
+      align-items: center
+    }
+
+    .badge {
+      background: #fff;
+      color: var(--ink);
+      border-radius: 22px;
+      padding: 40px;
+      text-align: center;
+      border-top: 10px solid var(--gold);
+      box-shadow: 0 30px 70px rgba(0, 0, 0, .4);
+      transform: rotate(-2deg);
+      transition: .4s
+    }
+
+    .badge:hover {
+      transform: rotate(0)
+    }
+
+    .seal {
+      width: 130px;
+      height: 130px;
+      margin: 0 auto 18px;
+      border-radius: 50%;
+      border: 6px double var(--g);
+      display: grid;
+      place-items: center;
+      color: var(--g);
+      font-family: 'Barlow Condensed';
+      font-weight: 800;
+      font-size: 2rem
+    }
+
+    .badge h3 {
+      font-size: 2.1rem;
+      color: var(--g)
+    }
+
+    .badge p {
+      color: var(--mut);
+      font-size: .95rem;
+      margin: 8px 0 18px
+    }
+
+    .badge dl {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      text-align: left;
+      border-top: 1px solid #dfe5e0;
+      padding-top: 16px;
+      font-size: .9rem
+    }
+
+    .badge dt {
+      color: var(--mut)
+    }
+
+    .badge dd {
+      font-weight: 600
+    }
+
+    .ia h2 {
+      font-size: clamp(2.4rem, 5vw, 4rem)
+    }
+
+    .ia h2 span {
+      color: var(--gold)
+    }
+
+    .ia p {
+      color: #cfe0d5;
+      margin: 16px 0 22px;
+      max-width: 54ch
+    }
+
+    .ia ul {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+      margin-bottom: 30px
+    }
+
+    .ia li {
+      display: flex;
+      gap: 14px
+    }
+
+    .ia li i {
+      flex: none;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--gk);
+      display: grid;
+      place-items: center;
+      font-style: normal;
+      font-weight: 800;
+      font-size: .85rem;
+      margin-top: 2px
+    }
+
+    /* courses */
+    .tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 32px
+    }
+
+    .tabs button {
+      padding: 10px 24px;
+      border: 2px solid var(--g);
+      background: transparent;
+      color: var(--g);
+      font-weight: 600;
+      border-radius: 40px;
+      cursor: pointer
+    }
+
+    .tabs button.on,
+    .tabs button:hover {
+      background: var(--g);
+      color: #fff
+    }
+
+    .rail {
+      display: flex;
+      gap: 26px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 10px 24px 40px;
+      margin: 0 -24px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--gold) transparent
+    }
+
+    .card {
+      flex: none;
+      width: 340px;
+      scroll-snap-align: start;
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 36px rgba(6, 56, 26, .12);
+      display: flex;
+      flex-direction: column;
+      transition: transform .2s, box-shadow .3s;
+      transform-style: preserve-3d
+    }
+
+    .card:hover {
+      box-shadow: 0 26px 54px rgba(6, 56, 26, .25)
+    }
+
+    .card .im {
+      position: relative;
+      height: 210px;
+      overflow: hidden
+    }
+
+    .card .im img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .6s
+    }
+
+    .card:hover .im img {
+      transform: scale(1.12)
+    }
+
+    .card .tag {
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      background: var(--gold);
+      color: var(--gk);
+      font-weight: 700;
+      font-size: .8rem;
+      padding: 4px 14px;
+      border-radius: 30px
+    }
+
+    .card .bd {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      flex: 1
+    }
+
+    .card h3 {
+      font-size: 1.75rem;
+      color: var(--g)
+    }
+
+    .card p {
+      color: var(--mut);
+      font-size: .95rem;
+      margin: 8px 0 18px
+    }
+
+    .card .mt {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      font-size: .9rem
+    }
+
+    .card .mt a {
+      background: var(--g);
+      color: #fff;
+      padding: 8px 18px;
+      border-radius: 30px;
+      transition: .2s
+    }
+
+    .card .mt a:hover {
+      background: var(--gold);
+      color: var(--gk)
+    }
+
+    .card.hide {
+      display: none
+    }
+
+    /* why */
+    .why {
+      background: var(--bg);
+      clip-path: polygon(0 0, 100% 4%, 100% 100%, 0 100%);
+      padding-top: 140px
+    }
+
+    .feat {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 22px
+    }
+
+    .f {
+      background: #fff;
+      border-radius: 20px;
+      padding: 30px 26px;
+      position: relative;
+      overflow: hidden;
+      transition: .3s
+    }
+
+    .f::before {
+      content: "";
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 0;
+      background: var(--g);
+      transition: .35s;
+      z-index: 0
+    }
+
+    .f:hover::before {
+      height: 100%
+    }
+
+    .f>* {
+      position: relative;
+      z-index: 1;
+      transition: .3s
+    }
+
+    .f:hover h3,
+    .f:hover p {
+      color: #fff
+    }
+
+    .f .ic {
+      width: 60px;
+      height: 60px;
+      border-radius: 16px;
+      background: var(--gold);
+      display: grid;
+      place-items: center;
+      font-size: 1.8rem;
+      margin-bottom: 18px
+    }
+
+    .f h3 {
+      font-size: 1.6rem;
+      color: var(--g)
+    }
+
+    .f p {
+      font-size: .93rem;
+      color: var(--mut);
+      margin-top: 6px
+    }
+
+    /* process */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      position: relative
+    }
+
+    .step {
+      padding-right: 26px;
+      position: relative
+    }
+
+    .step::before {
+      counter-increment: s;
+      content: counter(s);
+      display: grid;
+      place-items: center;
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--gk);
+      font-family: 'Barlow Condensed';
+      font-weight: 800;
+      font-size: 1.9rem;
+      margin-bottom: 18px;
+      position: relative;
+      z-index: 1
+    }
+
+    .steps {
+      counter-reset: s
+    }
+
+    .step::after {
+      content: "";
+      position: absolute;
+      top: 31px;
+      left: 62px;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), transparent)
+    }
+
+    .step:last-child::after {
+      display: none
+    }
+
+    .step h3 {
+      font-size: 1.6rem;
+      color: var(--g)
+    }
+
+    .step p {
+      color: var(--mut);
+      font-size: .95rem
+    }
+
+    /* testimonials */
+    .tm {
+      background: var(--gk);
+      color: #fff;
+      padding: 110px 0
+    }
+
+    .tm .head h2 {
+      color: #fff
+    }
+
+    .tslide {
+      display: none;
+      max-width: 860px
+    }
+
+    .tslide.on {
+      display: block;
+      animation: fade .7s forwards
+    }
+
+    .tslide blockquote {
+      font-family: 'Barlow Condensed';
+      font-size: clamp(1.8rem, 3.6vw, 2.9rem);
+      line-height: 1.15;
+      font-weight: 600
+    }
+
+    .tslide blockquote::before {
+      content: "\201C";
+      display: block;
+      font-size: 6rem;
+      color: var(--gold);
+      line-height: .6;
+      height: 40px
+    }
+
+    .by {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      margin-top: 26px
+    }
+
+    .by img {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--gold)
+    }
+
+    .by span {
+      display: block;
+      color: #9fb8a8;
+      font-size: .9rem
+    }
+
+    .tdots {
+      display: flex;
+      gap: 10px;
+      margin-top: 30px
+    }
+
+    .tdots button {
+      width: 34px;
+      height: 5px;
+      border: 0;
+      background: rgba(255, 255, 255, .3);
+      cursor: pointer;
+      border-radius: 3px
+    }
+
+    .tdots button.on {
+      background: var(--gold)
+    }
+
+    /* faq */
+    .faq {
+      max-width: 820px
+    }
+
+    details {
+      border-bottom: 2px solid #e3e9e4;
+      padding: 20px 0
+    }
+
+    summary {
+      cursor: pointer;
+      font-family: 'Barlow Condensed';
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--g);
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      text-transform: uppercase
+    }
+
+    summary::after {
+      content: "+";
+      color: var(--gold);
+      font-size: 2rem;
+      line-height: 1;
+      transition: .3s
+    }
+
+    details[open] summary::after {
+      transform: rotate(45deg)
+    }
+
+    details p {
+      color: var(--mut);
+      margin-top: 10px
+    }
+
+    /* cta */
+    .cta {
+      background: linear-gradient(rgba(3, 31, 15, .88), rgba(6, 56, 26, .9)), url(https://picsum.photos/seed/oilrig-cta/1600/700) center/cover fixed;
+      color: #fff;
+      text-align: center;
+      padding: 120px 0
+    }
+
+    .cta h2 {
+      font-size: clamp(2.6rem, 6vw, 5rem);
+      max-width: 15ch;
+      margin: 0 auto 16px
+    }
+
+    .cta p {
+      max-width: 52ch;
+      margin: 0 auto 32px;
+      color: #d8e8de
+    }
+
+    footer {
+      background: var(--gk);
+      color: #a9bfb0;
+      padding: 70px 0 0;
+      font-size: .95rem
+    }
+
+    .fg {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+      gap: 40px;
+      padding-bottom: 50px
+    }
+
+    footer h4 {
+      font-family: 'Barlow Condensed';
+      font-size: 1.3rem;
+      color: var(--gold);
+      margin-bottom: 14px;
+      text-transform: uppercase
+    }
+
+    footer ul {
+      list-style: none;
+      display: grid;
+      gap: 8px
+    }
+
+    footer a:hover {
+      color: var(--gold)
+    }
+
+    footer img {
+      height: 90px;
+      width: auto;
+      margin-bottom: 14px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 6px
+    }
+
+    .fb {
+      border-top: 1px solid rgba(255, 255, 255, .12);
+      padding: 20px 0;
+      font-size: .85rem;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px
+    }
+
+    .fab {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 70;
+      transform: translateY(120px);
+      transition: .4s
+    }
+
+    .fab.on {
+      transform: none
+    }
+
+    /* reveal */
+    .rv {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity .8s, transform .8s
+    }
+
+    .rv.in {
+      opacity: 1;
+      transform: none
+    }
+
+    @media(max-width:1000px) {
+
+      .nav ul,
+      .nav>.btn {
+        display: none
+      }
+
+      .burger {
+        display: block
+      }
+
+      .nav.open ul {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 88px;
+        left: 0;
+        right: 0;
+        background: #fff;
+        color: var(--ink);
+        padding: 20px 24px;
+        gap: 16px
+      }
+
+      .about,
+      .ia .grid {
+        grid-template-columns: 1fr;
+        gap: 44px
+      }
+
+      .collage {
+        height: 420px
+      }
+
+      .feat,
+      .steps,
+      .fg {
+        grid-template-columns: 1fr 1fr;
+        gap: 28px
+      }
+
+      .step::after {
+        display: none
+      }
+
+      .side {
+        display: none
+      }
+
+      .chip {
+        display: none
+      }
+
+      section {
+        padding: 80px 0
+      }
+    }
+
+    @media(max-width:600px) {
+
+      .feat,
+      .steps,
+      .fg {
+        grid-template-columns: 1fr
+      }
+
+      .card {
+        width: 280px
+      }
+
+      .slide h1 {
+        font-size: 3.2rem
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+      * {
+        animation: none !important;
+        transition: none !important
+      }
+
+      .rv {
+        opacity: 1;
+        transform: none
+      }
+
+      .slide>img {
+        transform: none
+      }
+
+      .slide h1 span b,
+      .slide p,
+      .slide .btns {
+        transform: none;
+        opacity: 1
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="bar"></div>
+  <header id="hd">
+    <div class="wrap nav" id="nav">
+      <a href="#top" class="logo"><img src="ramesar.png" alt="Ramesar Industrial and Oilfield Training Limited"></a>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#courses">Courses</a></li>
+        <li><a href="#why">Why Us</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+      <a href="#contact" class="btn btn-gold">Book a course</a>
+      <button class="burger" aria-label="Menu" onclick="nav.classList.toggle('open')">&#9776;</button>
+    </div>
+  </header>
+
+  <div class="hero" id="top">
+    <div class="slide on"><img src="slide1updated.jpg" alt="">
+      <div class="wrap">
+        <h1><span><b>Safe crews.</b></span><span><b>Certified</b></span><span><b>skills.</b></span></h1>
+        <p>Industrial and oilfield safety training that gets your people site-ready and keeps them safe on every shift.
+        </p>
+        <div class="btns"><a href="#courses" class="btn btn-gold">Explore courses</a><a href="#process"
+            class="btn btn-line">How it works</a></div>
+      </div>
+    </div>
+    <div class="slide"><img src="slide2.jpg" alt="">
+      <div class="wrap">
+        <h1><span><b>Train hard.</b></span><span><b>Work</b></span><span><b>safe.</b></span></h1>
+        <p>Hands-on, scenario-based courses delivered by instructors who have worked the rigs and plants themselves.</p>
+        <div class="btns"><a href="#courses" class="btn btn-gold">View schedule</a><a href="#contact"
+            class="btn btn-line">Talk to an advisor</a></div>
+      </div>
+    </div>
+    <div class="slide"><img src="slide3.jpg" alt="">
+      <div class="wrap">
+        <h1><span><b>Training</b></span><span><b>built for</b></span><span><b>your site.</b></span></h1>
+        <p>Group bookings, on-site delivery and custom programmes for contractors, operators and industrial teams.</p>
+        <div class="btns"><a href="#contact" class="btn btn-gold">Request a group quote</a><a href="#why"
+            class="btn btn-line">Why Ramesar</a></div>
+      </div>
+    </div>
+    <div class="side"><button class="on" aria-label="Slide 1"><img src="slide1updated.jpg"
+          alt=""></button><button aria-label="Slide 2"><img src="slide2.jpg"
+          alt=""></button><button aria-label="Slide 3"><img src="slide3.jpg"
+          alt=""></button></div>
+    <div class="chip">
+      <div><b>5,000+</b>learners trained</div>
+      <div><b>40+</b>safety courses</div>
+      <div><b>15 yrs</b>in the field</div>
+    </div>
+    <div class="prog" id="prog"></div>
+  </div>
+
+  <div class="mq" aria-hidden="true">
+    <div id="mqin"></div>
+  </div>
+
+  <section id="about">
+    <div class="wrap about">
+      <div class="collage rv"><img src="https://picsum.photos/seed/about-a/700/700" alt="" loading="lazy"><img
+          src="https://picsum.photos/seed/about-b/500/500" alt="" loading="lazy">
+        <div class="ring"><i>Safety<br>first<br>always</i></div>
+      </div>
+      <div class="rv">
+        <div class="head" style="margin-bottom:0">
+          <h2>Where safe habits are built</h2>
+          <p>Ramesar Industrial and Oilfield Training Limited prepares workers and supervisors for high-risk
+            environments with practical courses that match real site conditions. Replace this paragraph with your
+            company story.</p>
+        </div>
+        <div class="stats">
+          <div class="stat"><b data-n="5000">0</b>Learners trained</div>
+          <div class="stat"><b data-n="40">0</b>Safety courses</div>
+          <div class="stat"><b data-n="120">0</b>Companies served</div>
+          <div class="stat"><b data-n="98">0</b>% first-time pass</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ia" id="authorized">
+    <div class="wrap grid">
+      <div class="badge rv">
+        <div class="seal">IASHEP</div>
+        <h3>Authorized Learning Center</h3>
+        <p>Ramesar Industrial and Oilfield Training Limited is an approved IASHEP learning center.</p>
+        <dl>
+          <dt>Center ID</dt>
+          <dd>IASHEP-XXXX</dd>
+          <dt>Status</dt>
+          <dd>Active</dd>
+          <dt>Valid until</dt>
+          <dd>DD / MM / YYYY</dd>
+          <dt>Verify</dt>
+          <dd><a href="https://iashep.org/" target="_blank" rel="noopener"
+              style="color:var(--g);text-decoration:underline">iashep.org</a></dd>
+        </dl>
+      </div>
+      <div class="rv">
+        <h2>We are an authorized <span>IASHEP</span> learning center</h2>
+        <p>Learners can be confident that our centre is officially recognised. Replace this text with your approval
+          details.</p>
+        <ul>
+          <li><i>&#10003;</i><span><b>Officially recognised</b> centre, verifiable on the IASHEP website.</span></li>
+          <li><i>&#10003;</i><span><b>Approved delivery</b> by qualified instructors.</span></li>
+          <li><i>&#10003;</i><span><b>Credible certificates</b> that employers can check.</span></li>
+        </ul>
+        <a href="https://iashep.org/" target="_blank" rel="noopener" class="btn btn-gold">Verify our status</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="courses">
+    <div class="wrap">
+      <div class="head rv">
+        <h2>Courses that get you site-ready</h2>
+        <p>Filter by category, then swipe through the catalogue and book your seat.</p>
+      </div>
+      <div class="tabs"><button class="on" data-f="all">All</button><button data-f="oil">Oilfield</button><button
+          data-f="ind">Industrial</button><button data-f="lead">Leadership</button></div>
+      <div class="rail">
+        <article class="card" data-c="oil">
+          <div class="im"><img src="https://picsum.photos/seed/c-h2s/680/420" alt="" loading="lazy"><span
+              class="tag">Oilfield</span></div>
+          <div class="bd">
+            <h3>H2S Awareness &amp; Safety</h3>
+            <p>Detect, respond and escape hydrogen sulphide hazards.</p>
+            <div class="mt"><span>1 day</span><a href="#contact">Enrol</a></div>
+          </div>
+        </article>
+        <article class="card" data-c="ind">
+          <div class="im"><img src="https://picsum.photos/seed/c-height/680/420" alt="" loading="lazy"><span
+              class="tag">Industrial</span></div>
+          <div class="bd">
+            <h3>Working at Height</h3>
+            <p>Fall protection, rescue planning and equipment checks.</p>
+            <div class="mt"><span>2 days</span><a href="#contact">Enrol</a></div>
+          </div>
+        </article>
+        <article class="card" data-c="oil">
+          <div class="im"><img src="https://picsum.photos/seed/c-well/680/420" alt="" loading="lazy"><span
+              class="tag">Oilfield</span></div>
+          <div class="bd">
+            <h3>Well Control Basics</h3>
+            <p>Pressure control principles for rig and wellsite crews.</p>
+            <div class="mt"><span>3 days</span><a href="#contact">Enrol</a></div>
+          </div>
+        </article>
+        <article class="card" data-c="ind">
+          <div class="im"><img src="https://picsum.photos/seed/c-confined/680/420" alt="" loading="lazy"><span
+              class="tag">Industrial</span></div>
+          <div class="bd">
+            <h3>Confined Space Entry</h3>
+            <p>Permits, gas testing and emergency response.</p>
+            <div class="mt"><span>1 day</span><a href="#contact">Enrol</a></div>
+          </div>
+        </article>
+        <article class="card" data-c="ind">
+          <div class="im"><img src="https://picsum.photos/seed/c-fire/680/420" alt="" loading="lazy"><span
+              class="tag">Industrial</span></div>
+          <div class="bd">
+            <h3>Fire Safety &amp; Response</h3>
+            <p>Prevent fires, use extinguishers and lead evacuations.</p>
+            <div class="mt"><span>1 day</span><a href="#contact">Enrol</a></div>
+          </div>
+        </article>
+        <article class="card" data-c="lead oil ind">
+          <div class="im"><img src="https://picsum.photos/seed/c-hse/680/420" alt="" loading="lazy"><span
+              class="tag">Leadership</span></div>
+          <div class="bd">
+            <h3>HSE Supervisor Programme</h3>
+            <p>Risk assessment, investigations and safety leadership.</p>
+            <div class="mt"><span>5 days</span><a href="#contact">Enrol</a></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="why" id="why">
+    <div class="wrap">
+      <div class="head rv">
+        <h2>Training that works in the field</h2>
+        <p>We teach the way your crews actually work.</p>
+      </div>
+      <div class="feat">
+        <div class="f rv">
+          <div class="ic">&#128119;</div>
+          <h3>Industry instructors</h3>
+          <p>Trainers with years of oilfield and plant experience.</p>
+        </div>
+        <div class="f rv">
+          <div class="ic">&#128293;</div>
+          <h3>Live drills</h3>
+          <p>Real equipment and realistic emergency scenarios.</p>
+        </div>
+        <div class="f rv">
+          <div class="ic">&#128205;</div>
+          <h3>Flexible delivery</h3>
+          <p>At our centre, at your site or blended.</p>
+        </div>
+        <div class="f rv">
+          <div class="ic">&#9889;</div>
+          <h3>Fast certificates</h3>
+          <p>Issued quickly with online verification.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="wrap">
+      <div class="head rv">
+        <h2>From enquiry to certificate</h2>
+      </div>
+      <div class="steps">
+        <div class="step rv">
+          <h3>Choose a course</h3>
+          <p>Browse the catalogue or tell us your site needs.</p>
+        </div>
+        <div class="step rv">
+          <h3>Book your date</h3>
+          <p>Pick a public session or a private group.</p>
+        </div>
+        <div class="step rv">
+          <h3>Train and assess</h3>
+          <p>Complete practical sessions and the assessment.</p>
+        </div>
+        <div class="step rv">
+          <h3>Get certified</h3>
+          <p>Receive your certificate and renewal reminders.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tm">
+    <div class="wrap">
+      <div class="head">
+        <h2>Trusted by site teams</h2>
+      </div>
+      <div class="tslide on">
+        <blockquote>The H2S course was the most practical training our crew has ever done.</blockquote>
+        <div class="by"><img src="https://picsum.photos/seed/p1/100/100" alt="">
+          <div><b>Client Name</b><span>Operations Manager</span></div>
+        </div>
+      </div>
+      <div class="tslide">
+        <blockquote>Booking was simple and certificates arrived within days. Every new hire comes here.</blockquote>
+        <div class="by"><img src="https://picsum.photos/seed/p2/100/100" alt="">
+          <div><b>Client Name</b><span>HSE Lead</span></div>
+        </div>
+      </div>
+      <div class="tslide">
+        <blockquote>They came to our site and tailored the programme to our permit system.</blockquote>
+        <div class="by"><img src="https://picsum.photos/seed/p3/100/100" alt="">
+          <div><b>Client Name</b><span>Contractor Director</span></div>
+        </div>
+      </div>
+      <div class="tdots"><button class="on" aria-label="Testimonial 1"></button><button
+          aria-label="Testimonial 2"></button><button aria-label="Testimonial 3"></button></div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap faq">
+      <div class="head rv">
+        <h2>Common questions</h2>
+      </div>
+      <details open>
+        <summary>Can you train at our site?</summary>
+        <p>Yes. We deliver group and custom programmes at your location.</p>
+      </details>
+      <details>
+        <summary>How soon do we get certificates?</summary>
+        <p>Replace with your turnaround time.</p>
+      </details>
+      <details>
+        <summary>Do you offer group discounts?</summary>
+        <p>Contact us with your headcount for a tailored quote.</p>
+      </details>
+    </div>
+  </section>
+
+  <div class="cta" id="contact">
+    <div class="wrap rv">
+      <h2>Get your team site-ready</h2>
+      <p>Tell us what you need and an advisor will reply within one business day.</p><a
+        href="mailto:info@ramesar-training.com" class="btn btn-gold">Request a quote</a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="wrap">
+      <div class="fg">
+        <div><img src="logo.png" alt="Ramesar logo">
+          <p>Industrial and oilfield safety training.</p>
+        </div>
+        <div>
+          <h4>Courses</h4>
+          <ul>
+            <li><a href="#courses">Oilfield</a></li>
+            <li><a href="#courses">Industrial</a></li>
+            <li><a href="#courses">Leadership</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#authorized">Authorization</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li>Street Address, City</li>
+            <li>+000 000 0000</li>
+            <li>info@ramesar-training.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="fb"><span>&copy; 2026 Ramesar Industrial and Oilfield Training Limited.</span><span>Privacy &middot;
+          Terms</span></div>
+    </div>
+  </footer>
+  <a href="#contact" class="btn btn-gold fab" id="fab">Book a course</a>
+
+  <script>
+    (function () {
+      var $ = function (s, r) {return [].slice.call((r || document).querySelectorAll(s))};
+      var hd = document.getElementById('hd'), bar = document.getElementById('bar'), fab = document.getElementById('fab');
+      function sc() {var y = scrollY; hd.classList.toggle('s', y > 40); fab.classList.toggle('on', y > 700); bar.style.width = (y / (document.body.scrollHeight - innerHeight) * 100) + '%'}
+      addEventListener('scroll', sc, {passive: true}); sc();
+      /* marquee */
+      var m = ['H2S Safety', 'Working at Height', 'Confined Space', 'Well Control', 'Fire Response', 'HSE Supervisor'].map(function (t) {return '<span>' + t + '</span>'}).join('');
+      document.getElementById('mqin').innerHTML = m + m + m + m;
+      /* hero */
+      var s = $('.slide'), th = $('.side button'), i = 0, p = document.getElementById('prog'), t;
+      function go(n) {s[i].classList.remove('on'); th[i].classList.remove('on'); i = (n + s.length) % s.length; s[i].classList.add('on'); th[i].classList.add('on'); clearInterval(t); t = setInterval(function () {go(i + 1)}, 7000); p.style.transition = 'none'; p.style.width = '0'; void p.offsetWidth; p.style.transition = 'width 7s linear'; p.style.width = '100%'}
+      th.forEach(function (b, k) {b.onclick = function () {go(k)}}); go(0);
+      /* tabs */
+      $('.tabs button').forEach(function (x) {x.onclick = function () {$('.tabs button').forEach(function (y) {y.classList.remove('on')}); x.classList.add('on'); $('.card').forEach(function (c) {c.classList.toggle('hide', x.dataset.f !== 'all' && c.dataset.c.indexOf(x.dataset.f) < 0)})}});
+      /* 3D tilt */
+      $('.card').forEach(function (c) {c.addEventListener('mousemove', function (e) {var r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; c.style.transform = 'perspective(800px) rotateY(' + x * 10 + 'deg) rotateX(' + -y * 10 + 'deg) translateY(-6px)'}); c.addEventListener('mouseleave', function () {c.style.transform = ''})});
+      /* reveal + counters */
+      var io = new IntersectionObserver(function (es) {es.forEach(function (e) {if (!e.isIntersecting) return; e.target.classList.add('in'); io.unobserve(e.target); $('[data-n]', e.target).forEach(cnt)})}, {threshold: .15});
+      $('.rv').forEach(function (el, k) {el.style.transitionDelay = (k % 4) * .08 + 's'; io.observe(el)});
+      function cnt(el) {var n = +el.dataset.n, c = 0, st = Math.ceil(n / 50), v = setInterval(function () {c = Math.min(n, c + st); el.textContent = c.toLocaleString() + (n > 99 ? '+' : ''); if (c >= n) clearInterval(v)}, 30)}
+      /* testimonials */
+      var ts = $('.tslide'), td = $('.tdots button'), k = 0;
+      function tg(n) {ts[k].classList.remove('on'); td[k].classList.remove('on'); k = n % ts.length; ts[k].classList.add('on'); td[k].classList.add('on')}
+      td.forEach(function (b, n) {b.onclick = function () {tg(n)}}); setInterval(function () {tg(k + 1)}, 6500);
+    })();
+  </script>
+</body>
+
+</html>
